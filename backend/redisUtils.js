@@ -15,6 +15,7 @@ module.exports = (config, logger) => {
 		}
     };
 
+	console.log('Configuring client');
 	const client = redis.createClient(config.port, config.host, {
 		retry_strategy: function(options) {
 			//Retry interval
