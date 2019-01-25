@@ -1,0 +1,11 @@
+{
+  "name": "app-utils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:nitishmittal17/app-utils.git",
+  "author": "Nitish Mittal",
+  "license": "MIT",
+  "dependencies": {
+    "redis": "^2.8.0"
+  }
+}
