@@ -1,3 +1,13 @@
+/**
+ * sample config
+ * {
+ *      host: '127.0.0.1',
+        port: 6379,
+        retryInterval: 400
+ * }
+ *
+ * retryInterval is optional
+ */
 const redis = require('redis');
 const thunkify = require('thunkify');
 
@@ -18,7 +28,6 @@ module.exports = (config, logger) => {
     };
 
 	if (!client) {
-		console.log('Configuring client')
 		client = redis.createClient(config.port, config.host, {
 			retry_strategy: function(options) {
 				//Retry interval
