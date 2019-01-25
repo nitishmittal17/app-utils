@@ -6,6 +6,7 @@
   "author": "Nitish Mittal",
   "license": "MIT",
   "dependencies": {
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "thunkify": "^2.1.2"
   }
 }

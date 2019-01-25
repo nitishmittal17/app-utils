@@ -1,4 +1,5 @@
 const redis = require('redis');
+const thunkify = require('thunkify');
 
 module.exports = (config, logger) => {
 
