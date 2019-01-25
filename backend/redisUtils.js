@@ -1,6 +1,8 @@
 const redis = require('redis');
 const thunkify = require('thunkify');
 
+let client;
+
 module.exports = (config, logger) => {
 
 	const logError = (err) => {
@@ -15,16 +17,18 @@ module.exports = (config, logger) => {
 		}
     };
 
-	console.log('Configuring client');
-	const client = redis.createClient(config.port, config.host, {
-		retry_strategy: function(options) {
-			//Retry interval
-			return config.retryInterval || 300;
-		}}
-	);
-	client.on('reconnecting', log('reconnecting'));
-	client.on('error'       , log('error'));
-	client.on('end'         , log('end'));
+	if (!client) {
+		console.log('Configuring client')
+		client = redis.createClient(config.port, config.host, {
+			retry_strategy: function(options) {
+				//Retry interval
+				return config.retryInterval || 300;
+			}}
+		);
+		client.on('reconnecting', log('reconnecting'));
+		client.on('error'       , log('error'));
+		client.on('end'         , log('end'));
+	}
 
     return {
 	    setItem: function(key, value) {
