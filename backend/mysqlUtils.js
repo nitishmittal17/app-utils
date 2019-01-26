@@ -18,13 +18,13 @@ let pool;
 
 module.exports = (config, logger) => {
     if (!pool) {
-        console.log('Creating pool');
+        console.log('Creating pool', logger);
 	    pool  = mysql.createPool({
-		    connectionLimit : config.databaseConnection.connectionLimit,
-		    host            : config.databaseConnection.host,
-		    user            : config.databaseConnection.user,
-		    password        : config.databaseConnection.password,
-		    database        : config.databaseConnection.database
+		    connectionLimit : config.connectionLimit,
+		    host            : config.host,
+		    user            : config.user,
+		    password        : config.password,
+		    database        : config.database
 	    });
     }
 
