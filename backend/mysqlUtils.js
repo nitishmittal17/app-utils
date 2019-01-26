@@ -18,7 +18,6 @@ let pool;
 
 module.exports = (config, logger) => {
     if (!pool) {
-        console.log('Creating pool', logger);
 	    pool  = mysql.createPool({
 		    connectionLimit : config.connectionLimit,
 		    host            : config.host,
