@@ -4,7 +4,7 @@
  *      loggingMode: 'error',
  *      logDirectory: __dirname + "/logs",
         sentryConfig: {
-            sentryUrl: 'https://375dd45493914c1d84a13988ead845ea:ef33201e777c4fa08482eebce0329bb6@sentry.io/298254'
+            sentryUrl: 'https://xxxxxxxxxxxx@sentry.io/yyyyyy'
         },
         env: 'prod'
  * }
@@ -15,7 +15,7 @@ const Raven = require('raven');
 
 module.exports = (config) => {
     if (!winston.initialized) {
-        console.log('Adding loggers');
+        console.log('Adding loggers', config);
 	    winston.level = config.loggingMode;
 
 	    if (config.sentryConfig) {
