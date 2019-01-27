@@ -2,6 +2,7 @@
  * sample config
  * {
  *      loggingMode: 'error',
+ *      logDirectory: __dirname + "/logs",
         sentryConfig: {
             sentryUrl: 'https://375dd45493914c1d84a13988ead845ea:ef33201e777c4fa08482eebce0329bb6@sentry.io/298254'
         },
@@ -27,7 +28,7 @@ module.exports = (config) => {
 		    handleExceptions: true,
 		    humanReadableUnhandledException: true,
 		    maxsize: 2000000,
-		    filename: __dirname + "/logs/" + "log",
+		    filename: config.logDirectory + "/log",
 		    level: 'error'
 	    });
 
@@ -37,7 +38,7 @@ module.exports = (config) => {
 		    handleExceptions: true,
 		    humanReadableUnhandledException: true,
 		    maxsize: 2000000,
-		    filename: __dirname + "/logs/" + "log",
+		    filename: config.logDirectory + "log",
 		    level: 'info'
 	    });
 
