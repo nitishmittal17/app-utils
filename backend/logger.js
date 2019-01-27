@@ -52,16 +52,6 @@ module.exports = (config) => {
 		    level: 'error'
 	    });
 
-	    winston.add(winston.transports.DailyRotateFile, {
-		    name: 'info-file',
-		    datePattern: '.yyyy-MM-dd',
-		    handleExceptions: true,
-		    humanReadableUnhandledException: true,
-		    maxsize: 2000000,
-		    filename: config.logDirectory + "/log",
-		    level: 'info'
-	    });
-
 	    winston.remove(winston.transports.Console);
 
 	    winston.initialized = true;
@@ -89,10 +79,6 @@ module.exports = (config) => {
 		    } else {
 			    console.log(processStack(err.stack));
 		    }
-	    },
-
-	    logInfo: function (message) {
-		    winston.info(message);
 	    }
     }
 };
