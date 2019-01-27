@@ -7,8 +7,6 @@
         password : 'xxxx',
         database : 'xxxx'
  * }
- *
- * retryInterval is optional
  */
 
 const mysql = require('mysql');
