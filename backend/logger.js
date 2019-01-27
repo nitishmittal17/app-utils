@@ -19,7 +19,7 @@ module.exports = (config) => {
 	    winston.level = config.loggingMode;
 
 	    if (config.sentryConfig) {
-		    Raven.config(sentryConfig.sentryUrl).install();
+		    Raven.config(config.sentryConfig.sentryUrl).install();
         }
 
 	    winston.add(winston.transports.DailyRotateFile, {
