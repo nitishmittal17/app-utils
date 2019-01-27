@@ -15,7 +15,6 @@ const Raven = require('raven');
 
 module.exports = (config) => {
     if (!winston.initialized) {
-        console.log('Adding loggers', config);
 	    winston.level = config.loggingMode;
 
 	    if (config.sentryConfig) {
