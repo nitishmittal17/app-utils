@@ -50,10 +50,6 @@ module.exports = (config, logger) => {
 
 	    getItem: thunkify(function(key, callback) {
 		    client.get(key, function(err, res) {
-			    if(err) {
-				    logError(err);
-			    }
-
 			    try {
 				    callback(err, JSON.parse(res));
 			    } catch(e) {
@@ -65,27 +61,18 @@ module.exports = (config, logger) => {
 
 	    getItemWithCallback: function(key, callback) {
 		    client.get(key, function(err, res) {
-			    if(err) {
-				    logError(err);
-			    }
 			    callback(err, res);
 		    });
 	    },
 
 	    deleteItem: function(key) {
 		    client.del(key, function(err, reply) {
-			    if(err) {
-				    logError(err);
-			    }
+
 		    });
 	    },
 
 	    deleteItemThunked: thunkify(function(key, callback) {
 		    client.del(key, function(err, res) {
-			    if(err) {
-				    logError(err);
-			    }
-
 			    callback(err, res);
 		    });
 	    }),
@@ -96,10 +83,6 @@ module.exports = (config, logger) => {
 
 	    getFromSortedSet: thunkify(function(setName, numOfElements, callback) {
 		    client.zrevrange(setName, 0, numOfElements - 1, 'withscores', function(err, res) {
-			    if(err) {
-				    logError(err);
-			    }
-
 			    callback(err, res);
 		    })
 	    })

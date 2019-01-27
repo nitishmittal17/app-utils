@@ -14,7 +14,7 @@ const thunkify = require('thunkify');
 
 let pool;
 
-module.exports = (config, logger) => {
+module.exports = (config) => {
     if (!pool) {
 	    pool  = mysql.createPool({
 		    connectionLimit : config.connectionLimit,
@@ -30,9 +30,8 @@ module.exports = (config, logger) => {
 			// Use the connection
 			connection.query(query, function(err, rows, fields) {
 				connection.release();
-				if(err && logger) {
+				if(err) {
 					err.mysqlQuery = query;
-					logger.logError(err);
 				}
 
 				if(typeof callback === 'function') {

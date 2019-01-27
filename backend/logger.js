@@ -6,7 +6,8 @@
         sentryConfig: {
             sentryUrl: 'https://xxxxxxxxxxxx@sentry.io/yyyyyy'
         },
-        env: 'prod'
+        env: 'prod',
+        errMetaProperties: ['mysqlQuery']
  * }
  */
 
@@ -47,8 +48,18 @@ module.exports = (config) => {
     }
 
     return {
-	    logError: function (err) {
-		    winston.error(err, err.stack);
+	    logError: function (err, meta) {
+	    	meta = meta || {};
+
+	    	if (config.errMetaProperties) {
+	    		config.errMetaProperties.forEach(prop => {
+	    			if (err[prop]) {
+					    Object.assign(meta, err[prop]);
+				    }
+			    })
+		    }
+
+		    winston.error(err, err.stack, meta);
 		    if (config.env === 'prod' && config.sentryConfig) {
 			    Raven.captureException(err, (err, eventId) => {
 				    //console.log('Reported error ' + eventId);
