@@ -38,7 +38,7 @@ module.exports = (config) => {
 		    handleExceptions: true,
 		    humanReadableUnhandledException: true,
 		    maxsize: 2000000,
-		    filename: config.logDirectory + "log",
+		    filename: config.logDirectory + "/log",
 		    level: 'info'
 	    });
 
