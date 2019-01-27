@@ -14,6 +14,27 @@
 const winston = require('winston');
 const Raven = require('raven');
 
+const processStack = (stack) => {
+	let lines = stack.split('\n');
+	lines = lines.filter(line => {
+		if (line.indexOf('node_modules/koa-') > -1 || line.indexOf('node_modules/co/') > -1) {
+			return false;
+		}
+
+		if (line.indexOf('<anonymous>') > -1) {
+			return false;
+		}
+
+		if (line.indexOf('process._tickCallback') > -1) {
+			return false;
+		}
+
+		return true;
+	});
+	console.log(lines);
+	return lines.join('\n');
+}
+
 module.exports = (config) => {
     if (!winston.initialized) {
 	    winston.level = config.loggingMode;
@@ -52,14 +73,16 @@ module.exports = (config) => {
 	    	meta = meta || {};
 
 	    	if (config.errMetaProperties) {
-	    		config.errMetaProperties.forEach(prop => {
-	    			if (err[prop]) {
-					    Object.assign(meta, err[prop]);
+			    config.errMetaProperties.forEach(prop => {
+				    if (err[prop]) {
+					    let obj = {};
+					    obj[prop] = err[prop];
+					    Object.assign(meta, obj);
 				    }
 			    })
 		    }
 
-		    winston.error(err, err.stack, meta);
+		    winston.error(processStack(err.stack), meta);
 		    if (config.env === 'prod' && config.sentryConfig) {
 			    Raven.captureException(err, (err, eventId) => {
 				    //console.log('Reported error ' + eventId);
