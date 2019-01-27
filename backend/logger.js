@@ -31,7 +31,6 @@ const processStack = (stack) => {
 
 		return true;
 	});
-	console.log(lines);
 	return lines.join('\n');
 }
 
@@ -88,7 +87,7 @@ module.exports = (config) => {
 				    //console.log('Reported error ' + eventId);
 			    });
 		    } else {
-			    console.log(err, err.stack);
+			    console.log(processStack(err.stack));
 		    }
 	    },
 
