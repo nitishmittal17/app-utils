@@ -16,23 +16,31 @@ const Raven = require('raven');
 
 const processStack = (stack) => {
 	let lines = stack.split('\n');
+	let filterList = [
+		'node_modules/koa-',
+		'node_modules/resolve-path',
+		'node_modules/co/',
+		'node_modules/mysql/lib',
+		'<anonymous>',
+		'process._tick',
+		'at next (native)',
+		'at emitOne',
+		'at Socket.',
+		'at readableAddChunk',
+		'at TCP.'
+	];
+
 	lines = lines.filter(line => {
-		if (line.indexOf('node_modules/koa-') > -1 || line.indexOf('node_modules/co/') > -1) {
-			return false;
+		for (let x = 0; x < filterList.length; x++) {
+			let compareString = filterList[x];
+			if (line.indexOf(compareString) > -1) {
+				return false;
+			}
 		}
-
-		if (line.indexOf('<anonymous>') > -1) {
-			return false;
-		}
-
-		if (line.indexOf('process._tickCallback') > -1) {
-			return false;
-		}
-
 		return true;
 	});
 	return lines.join('\n');
-}
+};
 
 module.exports = (config) => {
     if (!winston.initialized) {
