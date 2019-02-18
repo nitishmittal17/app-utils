@@ -15,6 +15,11 @@ const winston = require('winston');
 const Raven = require('raven');
 
 const processStack = (stack) => {
+
+	if (!stack || stack.split) {
+		return stack;
+	}
+
 	let lines = stack.split('\n');
 	let filterList = [
 		'node_modules/koa-',
