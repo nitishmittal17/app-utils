@@ -27,18 +27,27 @@ module.exports = (config) => {
 
 	const executeQuery = function(query, callback) {
 		pool.getConnection(function(err, connection) {
-			// Use the connection
-			connection.query(query, function(err, rows, fields) {
-				connection.release();
-				if(err) {
-					err.mysqlQuery = query;
-				}
-
+			if (err) {
 				if(typeof callback === 'function') {
-					callback(err, rows);
+					callback(err, connection);
+				} else {
+					console.log(err);
 				}
-				// Don't use the connection here, it has been returned to the pool.
-			});
+			} else {
+				// Use the connection
+				connection.query(query, function(err, rows, fields) {
+					connection.release();
+					if(err) {
+						err.mysqlQuery = query;
+					}
+
+					if(typeof callback === 'function') {
+						callback(err, rows);
+					}
+					// Don't use the connection here, it has been returned to the pool.
+				});
+			}
+			
 		});
 	};
 
