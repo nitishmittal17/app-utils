@@ -21,7 +21,8 @@ module.exports = (config) => {
 		    host            : config.host,
 		    user            : config.user,
 		    password        : config.password,
-		    database        : config.database
+			database        : config.database,
+			multipleStatements: true
 	    });
     }
 
@@ -51,8 +52,47 @@ module.exports = (config) => {
 		});
 	};
 
+	_processBatch = function(statements) {
+		return new Promise(function(resolve, reject) {
+			let queryString = statements.join(";");
+            executeQuery(queryString, function(err, res) {
+                if (!err) {
+                    resolve();
+                } else {
+                    reject();
+                }
+            })
+        });
+	}
+
+	const executeMultipleStatements = function(statements, batchSize, callback) {
+		var statementBatch = [];
+		var promises = [];
+		for (var i = 0; i < statements.length; i++) {
+			if (statementBatch.length < batchSize) {
+				statementBatch.push(statements[i]);
+			} else {
+				promises.push(_processBatch(statementBatch));
+				statementBatch = [];
+				statementBatch.push(statements[i])
+			}
+		}
+
+		if (statementBatch.length > 0) {
+			promises.push(_processBatch(statementBatch));
+		}
+
+		Promise.all(promises).then(function() {
+			if(typeof callback === 'function') {
+				callback(null, '');
+			}
+		})
+	}
+
     return {
 	    executeQuery: thunkify(executeQuery),
-	    executePlainQuery: executeQuery
+		executePlainQuery: executeQuery,
+		executeMultipleStatements: thunkify(executeMultipleStatements),
+		executeMultipleStatementsAsync: executeMultipleStatements
     }
 };
